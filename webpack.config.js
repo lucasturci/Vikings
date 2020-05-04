@@ -7,4 +7,12 @@ module.exports = {
         filename: 'bundle.js',
         publicPath: '/static/'
     },
+    module: {
+        rules: [{
+            test: /\.js$/,
+            exclude: /node_modules/,
+            include: /src/,
+            use: 'babel-loader',
+        }]
+    }
 };

@@ -22,5 +22,9 @@
     "http": "^0.0.1-security",
     "react": "^16.13.1",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.43.0",
+    "webpack-dev-server": "^3.10.3"
   }
 }

@@ -14,5 +14,8 @@ module.exports = {
             include: /src/,
             use: 'babel-loader',
         }]
+    },
+    devServer: {
+        historyApiFallback: true
     }
 };

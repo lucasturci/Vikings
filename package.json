@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/lucasturci/Vikings#readme",
   "dependencies": {
+    "css-loader": "^3.5.3",
     "express": "^4.17.1",
     "http": "^0.0.1-security",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "socket.io": "^2.3.0",
-    "socket.io-client": "^2.3.0"
+    "socket.io-client": "^2.3.0",
+    "style-loader": "^1.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",

@@ -22,6 +22,9 @@ module.exports = Object.assign({
             exclude: /node_modules/,
             include: /src/,
             use: 'babel-loader',
+        }, {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
         }]
     },
     

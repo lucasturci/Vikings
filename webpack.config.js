@@ -21,7 +21,7 @@ module.exports = Object.assign({
             test: /\.js$/,
             exclude: /node_modules/,
             include: /src/,
-            use: 'babel-loader',
+            use: ['babel-loader', 'eslint-loader'],
         }, {
             test: /\.css$/,
             use: ['style-loader', 'css-loader']

@@ -5,7 +5,7 @@ import './style.css'
 import { getSocketContext } from './SocketContext';
  */
 const App = () => {
-/*     const [chat, setChat] = useState([])
+	/*     const [chat, setChat] = useState([])
     const socket = useContext(getSocketContext())
 
     const sendMessage = useCallback(() => {
@@ -29,7 +29,11 @@ const App = () => {
         </div>
     </div> */
 
-    return <div className='column'> <h1> VIKINGS </h1> <Menu/> </div>
+	return (
+		<div className="column">
+			<h1> VIKINGS </h1> <Menu />
+		</div>
+	)
 }
 
 export default App

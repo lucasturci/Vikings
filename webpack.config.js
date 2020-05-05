@@ -1,4 +1,5 @@
 const path = require('path')
+const { EnvironmentPlugin } = require('webpack')
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'index'),
@@ -17,5 +18,10 @@ module.exports = {
     },
     devServer: {
         historyApiFallback: true
-    }
+    },
+    plugins: [
+        new EnvironmentPlugin({
+            NODE_ENV: 'development'
+        })
+    ]
 };

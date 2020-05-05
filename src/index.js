@@ -1,9 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import App from './App'
 
 import io from 'socket.io-client'
+import { getSocketContext } from './SocketContext';
 
-console.log("Running webpack");
+const SocketContext = getSocketContext()
 
-const socket = io('http://127.0.0.1:8081')
-ReactDOM.render(<h1> Hello World </h1>, document.getElementById('root'))
+const port = 8081
+const path = `http://127.0.0.1:${port}`
+
+const socket = io(path)
+
+ReactDOM.render(
+    <SocketContext.Provider value={socket}>
+        <App/>
+    </SocketContext.Provider>,
+    document.getElementById('root')
+)

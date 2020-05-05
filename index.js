@@ -11,5 +11,14 @@ http.listen(port, () => {
 
 io.on('connection', socket => {
     console.log('New user connected')
+    
+    socket.on('chat message', msg => {
+        console.log(`New chat message: ${msg}`)
+        io.emit('chat message', msg)
+    })
+
+    socket.on('disconnect', () => {
+        console.log('A user disconnected')
+    })
 })
 

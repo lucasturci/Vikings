@@ -29,7 +29,7 @@ const App = () => {
         </div>
     </div> */
 
-    return <> <h1> VIKINGS </h1> <Menu/> </>
+    return <div className='column'> <h1> VIKINGS </h1> <Menu/> </div>
 }
 
 export default App

@@ -1,9 +1,11 @@
 import React from 'react'
-import {useState, useContext, useCallback } from 'react'
+import Menu from './Menu'
+import './style.css'
+/* import {useState, useContext, useCallback } from 'react'
 import { getSocketContext } from './SocketContext';
-
+ */
 const App = () => {
-    const [chat, setChat] = useState([])
+/*     const [chat, setChat] = useState([])
     const socket = useContext(getSocketContext())
 
     const sendMessage = useCallback(() => {
@@ -25,7 +27,9 @@ const App = () => {
         <div>
             {chat.map(msg => <p> {msg} </p>)}
         </div>
-    </div>
+    </div> */
+
+    return <> <h1> VIKINGS </h1> <Menu/> </>
 }
 
 export default App

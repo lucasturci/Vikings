@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "webpack": "webpack",
-    "webpack-dev-server": "webpack-dev-server"
+    "webpack": "NODE_ENV=production webpack",
+    "webpack-dev-server": "NODE_ENV=development webpack-dev-server"
   },
   "repository": {
     "type": "git",

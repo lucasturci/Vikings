@@ -43,6 +43,7 @@ io.on('connection', (socket) => {
 	socket.on('CREATE_ROOM', () => {
 		const roomId = newRoom()
 
+		console.log('Created new room ', roomId)
 		let arr = rooms.get(roomId)
 		arr.push(socket.id)
 		rooms.set(roomId, arr)
@@ -73,15 +74,17 @@ io.on('connection', (socket) => {
 	})
 
 	socket.on('disconnect', () => {
-		const roomId = roomsOfSocket.get(socket.id)
-		const arr = rooms.get(roomId)
+		if (roomsOfSocket.has(socket.id)) {
+			const roomId = roomsOfSocket.get(socket.id)
+			const arr = rooms.get(roomId)
 
-		io.in(roomId).emit(`User ${socket.id} disconnected`)
-		roomsOfSocket.delete(socket.id)
-		rooms.set(
-			roomId,
-			arr.filter((id) => id !== socket.id), // remove esse id
-		)
+			io.in(roomId).emit(`User ${socket.id} disconnected`)
+			roomsOfSocket.delete(socket.id)
+			rooms.set(
+				roomId,
+				arr.filter((id) => id !== socket.id), // remove esse id
+			)
+		}
 
 		console.log(`User ${socket.id} disconnected`)
 	})

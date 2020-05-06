@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useEffect, useContext } from 'react'
 import Menu from './Menu'
 import './style.css'
-/* import {useState, useContext, useCallback } from 'react'
-import { getSocketContext } from './SocketContext';
- */
+/* import {useState, useContext, useCallback } from 'react' */
+
+import { getSocketContext } from './SocketContext'
+
 const App = () => {
+	const socket = useContext(getSocketContext())
+
+	useEffect(() => {
+		socket.on('ALERT_ERR', (msg) => {
+			alert(`Error: ${msg}`)
+		})
+
+		socket.on('JOINED', (roomId) => {
+			alert(`Joined room ${roomId}`)
+		})
+	}, [])
 	/*     const [chat, setChat] = useState([])
     const socket = useContext(getSocketContext())
 

@@ -3,7 +3,8 @@
     "extends": ["eslint:recommended", "prettier", "plugin:react/recommended"],
     "plugins": ["react", "prettier"],
     "rules": {
-      "prettier/prettier": "error"
+		"prettier/prettier": "error",
+		"react/prop-types": 0
     },
     "env": {
       "node": true,

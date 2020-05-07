@@ -70,6 +70,11 @@ io.on('connection', (socket) => {
 			io.to(socket.id).emit('JOINED', roomId)
 			socket.join(roomId)
 			roomsOfSocket.set(socket.id, roomId)
+
+			if (arr.length === max_in_room) {
+				// ask players if they are ready
+				io.in(roomId).emit('READY?')
+			}
 		}
 	})
 

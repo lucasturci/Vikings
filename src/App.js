@@ -62,8 +62,10 @@ const App = () => {
 
 	const game = (
 		<div className="column">
-			<h1> VIKINGS </h1>
-			<button disabled={gameState !== WAITING_READY}> Ready! </button>
+			<h1> Game </h1>
+			<div className="column center-vertically">
+				<button disabled={gameState !== WAITING_READY}> Ready! </button>
+			</div>
 		</div>
 	)
 

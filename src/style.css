@@ -61,6 +61,32 @@ button:hover {
     text-decoration: none;
 }
 
+button:disabled {
+    font-family: inherit;
+    border: solid #337FED 0px;
+    background: #D17768;
+    background-image: -webkit-linear-gradient(top, #D17768, #D5C082);
+    background-image: -moz-linear-gradient(top, #D17768, #D5C082);
+    background-image: -ms-linear-gradient(top, #D17768, #D5C082);
+    background-image: -o-linear-gradient(top, #D17768, #D5C082);
+    background-image: linear-gradient(to bottom, #D17768, #D5C082);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    color: #E5E5E5;
+    font-size: 30px;
+    font-weight: 100;
+    padding: 30px;
+    width: 250px;
+    box-shadow: 0px 1px 2px 0px #000000;
+    -webkit-box-shadow: 0px 1px 2px 0px #000000;
+    -moz-box-shadow: 0px 1px 2px 0px #000000;
+	text-decoration: none;
+	cursor: default;
+    display: inline-block;
+    text-align: center;
+}
+
 .up20 {
     position: relative;
     top: -100px;

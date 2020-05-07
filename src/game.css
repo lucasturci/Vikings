@@ -1,6 +1,6 @@
 #board {
-	width: 512px;
-	height: 512px;
+	width: 706px;
+	height: 704px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -10,15 +10,8 @@
 .cell {
 	width: 64px;
 	height: 64px;
+	background-size: 64px 64px;
 	color: white;
-}
-
-.white {
-	background: grey;
-}
-
-.black {
-	background: black;
 }
 
 .noselect {

@@ -10,9 +10,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="16.933332mm"
+   height="16.933331mm"
+   viewBox="0 0 16.933332 16.933331"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
@@ -35,11 +35,11 @@
        inkscape:collect="always"
        xlink:href="#linearGradient1429"
        id="radialGradient1431"
-       cx="69.03049"
+       cx="69.030487"
        cy="119.78236"
-       fx="69.03049"
+       fx="69.030487"
        fy="119.78236"
-       r="8.466666"
+       r="8.4666662"
        gradientTransform="matrix(0.98437508,0,0,0.98437508,1.0785961,1.8716051)"
        gradientUnits="userSpaceOnUse" />
   </defs>
@@ -51,8 +51,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="278.27476"
-     inkscape:cy="659.36372"
+     inkscape:cx="-2.9366524"
+     inkscape:cy="22.7649"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -61,7 +61,11 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:snap-global="false" />
+     inkscape:snap-global="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -77,7 +81,8 @@
   <g
      inkscape:label="Camada 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-69.0795,-111.63323)">
     <g
        id="g833"
        transform="translate(8.5156765,0.31753225)">
@@ -370,7 +375,7 @@
          inkscape:connector-curvature="0"
          id="path1051"
          d="m 81.584024,125.1791 c 0,0 -0.668176,2.57247 -3.441097,1.5368"
-         style="fill:none;stroke:#554400;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:0.98823529" />
+         style="fill:none;fill-opacity:0.98823529;stroke:#554400;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
       <path
          style="fill:none;fill-opacity:0.98823529;stroke:#554400;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          d="m 73.528997,125.1791 c 0,0 0.668176,2.57247 3.441097,1.5368"

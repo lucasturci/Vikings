@@ -3,19 +3,27 @@ import getDragListener from './DragListener'
 import './style.css'
 import './game.css'
 
-const Cell = ({ id, value }) => {
+import BlankCell from '../assets/blank-cell.svg'
+import CastleCell from '../assets/castle-cell.svg'
+import WhiteCell from '../assets/white-cell.svg'
+
+const Cell = ({ id, back }) => {
 	const dragListener = getDragListener()
 
-	console.log((id % 8) + Math.floor(id / 8))
+	console.log(back)
 	return (
 		<div
-			className={`cell noselect ${
-				((id % 8) + Math.floor(id / 8)) % 2 === 1 ? 'white' : 'black'
-			}`}
+			className={`cell noselect`}
 			onMouseDown={() => dragListener.startRecording(id)}
-			onMouseUp={() => dragListener.stopRecording(id)}>
-			{value}
-		</div>
+			onMouseUp={() => dragListener.stopRecording(id)}
+			style={{
+				backgroundImage:
+					back === '.'
+						? `url(${BlankCell})`
+						: back === 'C'
+						? `url(${CastleCell})`
+						: `url(${WhiteCell})`,
+			}}></div>
 	)
 }
 

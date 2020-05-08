@@ -6,8 +6,13 @@ import './game.css'
 import BlankCell from '../assets/blank-cell.svg'
 import CastleCell from '../assets/castle-cell.svg'
 import WhiteCell from '../assets/white-cell.svg'
+import BlackCell from '../assets/black-cell.svg'
 
-const Cell = ({ id, back }) => {
+import BlackPiece from '../assets/black-piece.svg'
+import WhitePiece from '../assets/white-piece.svg'
+import KingPiece from '../assets/king-piece.svg'
+
+const Cell = ({ id, value, back }) => {
 	const dragListener = getDragListener()
 
 	console.log(back)
@@ -22,8 +27,23 @@ const Cell = ({ id, back }) => {
 						? `url(${BlankCell})`
 						: back === 'C'
 						? `url(${CastleCell})`
-						: `url(${WhiteCell})`,
-			}}></div>
+						: back === 'W'
+						? `url(${WhiteCell})`
+						: `url(${BlackCell})`,
+			}}>
+			{value !== '.' ? (
+				<img
+					src={
+						value == 'W'
+							? WhitePiece
+							: value === 'B'
+							? BlackPiece
+							: KingPiece
+					}
+					width="64"
+					height="64"></img>
+			) : null}
+		</div>
 	)
 }
 

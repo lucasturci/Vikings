@@ -75,45 +75,47 @@ const Game = ({ gameState, gameId }) => {
 		dragListener.setCallback(drag)
 	}, [selectedCell, turn])
 	useEffect(() => {
-		document.body.addEventListener('click', (e) => {
+		const evt = (e) => {
 			if (!insideBoard(e.clientX, e.clientY)) {
 				setSelectedCell(null)
 				setSuggestedMoves([])
 			}
-		})
+		}
+		document.body.addEventListener('click', evt)
+		document.body.addEventListener('touchstart', evt)
 		dragListener.setCallback(drag)
 	}, [])
 
+	const beginMove = (e) => {
+		const rect = document.querySelector('#board').getBoundingClientRect()
+		if (insideBoard(e.clientX, e.clientY)) {
+			const x = Math.floor((e.clientX - rect.left) / 64)
+			const y = Math.floor((e.clientY - rect.top) / 64)
+			const id = y * 11 + x
+			dragListener.startRecording(id)
+		}
+	}
+	const finishMove = (e) => {
+		const rect = document.querySelector('#board').getBoundingClientRect()
+		if (insideBoard(e.clientX, e.clientY)) {
+			const x = Math.floor((e.clientX - rect.left) / 64)
+			const y = Math.floor((e.clientY - rect.top) / 64)
+			const id = y * 11 + x
+			dragListener.stopRecording(id)
+		} else {
+			dragListener.cancelRecording()
+		}
+	}
 	return (
 		<div>
 			<p className="statusMessage"> Game ID: {gameId} </p>
 
 			<div
 				id="board"
-				onMouseDown={(e) => {
-					const rect = document
-						.querySelector('#board')
-						.getBoundingClientRect()
-					if (insideBoard(e.clientX, e.clientY)) {
-						const x = Math.floor((e.clientX - rect.left) / 64)
-						const y = Math.floor((e.clientY - rect.top) / 64)
-						const id = y * 11 + x
-						dragListener.startRecording(id)
-					}
-				}}
-				onMouseUp={(e) => {
-					const rect = document
-						.querySelector('#board')
-						.getBoundingClientRect()
-					if (insideBoard(e.clientX, e.clientY)) {
-						const x = Math.floor((e.clientX - rect.left) / 64)
-						const y = Math.floor((e.clientY - rect.top) / 64)
-						const id = y * 11 + x
-						dragListener.stopRecording(id)
-					} else {
-						dragListener.cancelRecording()
-					}
-				}}>
+				onMouseDown={beginMove}
+				onTouchStart={beginMove}
+				onMouseUp={finishMove}
+				onTouchEnd={finishMove}>
 				{board.map((x, i) => (
 					<Cell
 						id={i}

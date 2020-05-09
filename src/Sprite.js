@@ -20,17 +20,22 @@ const Sprite = ({ src }) => {
 		setDragging(false)
 		setSnapped(true)
 	}
+
+	const mouseDown = (e) => {
+		dragListener.setSpriteUpdate(spriteUpdate, snap)
+		spriteUpdate(e.clientX, e.clientY)
+		setDragging(true)
+	}
+	const mouseMove = () => {
+		if (dragging) setSnapped(false)
+	}
 	return (
 		<img
 			className="noselect"
-			onMouseDown={(e) => {
-				dragListener.setSpriteUpdate(spriteUpdate, snap)
-				spriteUpdate(e.clientX, e.clientY)
-				setDragging(true)
-			}}
-			onMouseMove={() => {
-				if (dragging) setSnapped(false)
-			}}
+			onMouseDown={mouseDown}
+			onTouchStart={mouseDown}
+			onMouseMove={mouseMove}
+			onTouchMove={mouseMove}
 			style={
 				!snapped
 					? {

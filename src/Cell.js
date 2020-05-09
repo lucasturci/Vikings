@@ -12,10 +12,10 @@ import BlackPiece from '../assets/black-piece.svg'
 import WhitePiece from '../assets/white-piece.svg'
 import KingPiece from '../assets/king-piece.svg'
 
-const Cell = ({ value, back }) => {
+const Cell = ({ value, back, glowing }) => {
 	return (
 		<div
-			className={`cell noselect`}
+			className={`cell noselect ${glowing ? 'glowing' : ''}`}
 			style={{
 				backgroundImage:
 					back === '.'

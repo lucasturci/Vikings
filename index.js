@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/index.html')
 })
 
-app.get('/static/bundle.js', (req, res) => {
-	res.sendFile(__dirname + '/dist/bundle.js')
+app.get('/static/:filename', (req, res) => {
+	res.sendFile(__dirname + '/dist/' + req.params.filename)
 })
 
 const rooms = new Map()

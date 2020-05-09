@@ -21,9 +21,15 @@ const Sprite = ({ src }) => {
 		setSnapped(true)
 	}
 
-	const mouseDown = (e) => {
+	const mouseDown = (e, isMobile) => {
+		const x = isMobile
+			? e.touches[0].clientX || e.changedTouches[0].clientX
+			: e.clientX
+		const y = isMobile
+			? e.touches[0].clientY || e.changedTouches[0].clientY
+			: e.clientY
 		dragListener.setSpriteUpdate(spriteUpdate, snap)
-		spriteUpdate(e.clientX, e.clientY)
+		spriteUpdate(x, y)
 		setDragging(true)
 	}
 	const mouseMove = () => {
@@ -32,8 +38,8 @@ const Sprite = ({ src }) => {
 	return (
 		<img
 			className="noselect"
-			onMouseDown={mouseDown}
-			onTouchStart={mouseDown}
+			onMouseDown={(e) => mouseDown(e, false)}
+			onTouchStart={(e) => mouseDown(e, true)}
 			onMouseMove={mouseMove}
 			onTouchMove={mouseMove}
 			style={

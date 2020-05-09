@@ -75,31 +75,49 @@ const Game = ({ gameState, gameId }) => {
 		dragListener.setCallback(drag)
 	}, [selectedCell, turn])
 	useEffect(() => {
-		const evt = (e) => {
-			if (!insideBoard(e.clientX, e.clientY)) {
+		const evt = (e, isMobile) => {
+			const x = isMobile
+				? e.touches[0].clientX || e.changedTouches[0].clientX
+				: e.clientX
+			const y = isMobile
+				? e.touches[0].clientY || e.changedTouches[0].clientY
+				: e.clientY
+			if (!insideBoard(x, y)) {
 				setSelectedCell(null)
 				setSuggestedMoves([])
 			}
 		}
-		document.body.addEventListener('click', evt)
-		document.body.addEventListener('touchstart', evt)
+		document.body.addEventListener('click', (e) => evt(e, false))
+		document.body.addEventListener('touchstart', (e) => evt(e, true))
 		dragListener.setCallback(drag)
 	}, [])
 
-	const beginMove = (e) => {
+	const beginMove = (e, isMobile) => {
+		let x = isMobile
+			? e.touches[0].clientX || e.changedTouches[0].clientX
+			: e.clientX
+		let y = isMobile
+			? e.touches[0].clientY || e.changedTouches[0].clientY
+			: e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
-		if (insideBoard(e.clientX, e.clientY)) {
-			const x = Math.floor((e.clientX - rect.left) / 64)
-			const y = Math.floor((e.clientY - rect.top) / 64)
+		if (insideBoard(x, y)) {
+			x = Math.floor((x - rect.left) / 64)
+			y = Math.floor((y - rect.top) / 64)
 			const id = y * 11 + x
 			dragListener.startRecording(id)
 		}
 	}
-	const finishMove = (e) => {
+	const finishMove = (e, isMobile) => {
+		let x = isMobile
+			? e.touches[0].clientX || e.changedTouches[0].clientX
+			: e.clientX
+		let y = isMobile
+			? e.touches[0].clientY || e.changedTouches[0].clientY
+			: e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
-		if (insideBoard(e.clientX, e.clientY)) {
-			const x = Math.floor((e.clientX - rect.left) / 64)
-			const y = Math.floor((e.clientY - rect.top) / 64)
+		if (insideBoard(x, y)) {
+			x = Math.floor((x - rect.left) / 64)
+			y = Math.floor((y - rect.top) / 64)
 			const id = y * 11 + x
 			dragListener.stopRecording(id)
 		} else {
@@ -112,10 +130,10 @@ const Game = ({ gameState, gameId }) => {
 
 			<div
 				id="board"
-				onMouseDown={beginMove}
-				onTouchStart={beginMove}
-				onMouseUp={finishMove}
-				onTouchEnd={finishMove}>
+				onMouseDown={(e) => beginMove(e, false)}
+				onTouchStart={(e) => beginMove(e, true)}
+				onMouseUp={(e) => finishMove(e, false)}
+				onTouchEnd={(e) => finishMove(e, true)}>
 				{board.map((x, i) => (
 					<Cell
 						id={i}

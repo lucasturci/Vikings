@@ -6,9 +6,13 @@ class DragListener {
 		this.updateSprite = null
 		this.snap = null
 
-		const mouseMoveEvt = (e) => {
-			let x = e.clientX
-			let y = e.clientY
+		const mouseMoveEvt = (e, isMobile) => {
+			const x = isMobile
+				? e.touches[0].clientX || e.changedTouches[0].clientX
+				: e.clientX
+			const y = isMobile
+				? e.touches[0].clientY || e.changedTouches[0].clientY
+				: e.clientY
 
 			if (
 				x < 0 ||
@@ -26,10 +30,10 @@ class DragListener {
 		// If mouse goes off the window while moving piece, stop recording
 		document
 			.querySelector('html')
-			.addEventListener('mousemove', mouseMoveEvt)
+			.addEventListener('mousemove', (e) => mouseMoveEvt(e, false))
 		document
 			.querySelector('html')
-			.addEventListener('touchmove', mouseMoveEvt)
+			.addEventListener('touchmove', (e) => mouseMoveEvt(e, true))
 	}
 
 	startRecording(pos1) {

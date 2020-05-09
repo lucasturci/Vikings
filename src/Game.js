@@ -77,10 +77,14 @@ const Game = ({ gameState, gameId }) => {
 	useEffect(() => {
 		const evt = (e, isMobile) => {
 			const x = isMobile
-				? e.touches[0].clientX || e.changedTouches[0].clientX
+				? e.touches[0].pageX ||
+				  e.changedTouches[0].pageX ||
+				  e.targetTouches[0].pageY
 				: e.clientX
 			const y = isMobile
-				? e.touches[0].clientY || e.changedTouches[0].clientY
+				? e.touches[0].pageY ||
+				  e.changedTouches[0].pageY ||
+				  e.targetTouches[0].pageY
 				: e.clientY
 			if (!insideBoard(x, y)) {
 				setSelectedCell(null)
@@ -94,10 +98,14 @@ const Game = ({ gameState, gameId }) => {
 
 	const beginMove = (e, isMobile) => {
 		let x = isMobile
-			? e.touches[0].clientX || e.changedTouches[0].clientX
+			? e.touches[0].pageX ||
+			  e.changedTouches[0].pageX ||
+			  e.targetTouches[0].pageY
 			: e.clientX
 		let y = isMobile
-			? e.touches[0].clientY || e.changedTouches[0].clientY
+			? e.touches[0].pageY ||
+			  e.changedTouches[0].pageY ||
+			  e.targetTouches[0].pageY
 			: e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
 		if (insideBoard(x, y)) {
@@ -109,10 +117,14 @@ const Game = ({ gameState, gameId }) => {
 	}
 	const finishMove = (e, isMobile) => {
 		let x = isMobile
-			? e.touches[0].clientX || e.changedTouches[0].clientX
+			? e.touches[0].pageX ||
+			  e.changedTouches[0].pageX ||
+			  e.targetTouches[0].pageY
 			: e.clientX
 		let y = isMobile
-			? e.touches[0].clientY || e.changedTouches[0].clientY
+			? e.touches[0].pageY ||
+			  e.changedTouches[0].pageY ||
+			  e.targetTouches[0].pageY
 			: e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
 		if (insideBoard(x, y)) {

@@ -2,7 +2,9 @@ class DragListener {
 	constructor() {
 		this.pos1 = this.pos2 = -1
 		this.recording = false
-		this.callback
+		this.callback = null
+		this.updateSprite = null
+		this.snap = null
 
 		// If mouse goes off the window while moving piece, stop recording
 		document.querySelector('html').addEventListener('mousemove', (e) => {
@@ -15,8 +17,11 @@ class DragListener {
 				x >= document.body.clientWidth ||
 				y >= document.body.clientHeight
 			) {
-				this.recording = false
-				this.pos1 = this.pos2 = -1
+				this.cancelRecording()
+			} else {
+				if (this.recording) {
+					this.spriteUpdate(x, y)
+				}
 			}
 		})
 	}
@@ -32,7 +37,14 @@ class DragListener {
 			this.emitMove()
 			this.recording = false
 			this.pos1 = this.pos2 = -1
+			if (this.snap) this.snap()
 		}
+	}
+
+	cancelRecording() {
+		this.recording = false
+		this.pos1 = this.pos2 = -1
+		if (this.snap) this.snap()
 	}
 
 	emitMove() {
@@ -41,6 +53,11 @@ class DragListener {
 
 	setCallback(cb) {
 		this.callback = cb
+	}
+
+	setSpriteUpdate(spriteUpdateCallback, snapCallback) {
+		this.spriteUpdate = spriteUpdateCallback
+		this.snap = snapCallback
 	}
 }
 

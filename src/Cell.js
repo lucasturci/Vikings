@@ -1,5 +1,5 @@
 import React from 'react'
-import getDragListener from './DragListener'
+import Sprite from './Sprite'
 import './style.css'
 import './game.css'
 
@@ -12,15 +12,10 @@ import BlackPiece from '../assets/black-piece.svg'
 import WhitePiece from '../assets/white-piece.svg'
 import KingPiece from '../assets/king-piece.svg'
 
-const Cell = ({ id, value, back }) => {
-	const dragListener = getDragListener()
-
-	console.log(back)
+const Cell = ({ value, back }) => {
 	return (
 		<div
 			className={`cell noselect`}
-			onMouseDown={() => dragListener.startRecording(id)}
-			onMouseUp={() => dragListener.stopRecording(id)}
 			style={{
 				backgroundImage:
 					back === '.'
@@ -31,18 +26,19 @@ const Cell = ({ id, value, back }) => {
 						? `url(${WhiteCell})`
 						: `url(${BlackCell})`,
 			}}>
-			{value !== '.' ? (
-				<img
-					src={
-						value == 'W'
-							? WhitePiece
-							: value === 'B'
-							? BlackPiece
-							: KingPiece
-					}
-					width="64"
-					height="64"></img>
-			) : null}
+			<div style={{ position: 'relative' }}>
+				{value !== '.' ? (
+					<Sprite
+						src={
+							value == 'W'
+								? WhitePiece
+								: value === 'B'
+								? BlackPiece
+								: KingPiece
+						}
+					/>
+				) : null}
+			</div>
 		</div>
 	)
 }

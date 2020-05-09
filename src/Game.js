@@ -52,7 +52,42 @@ const Game = ({ gameState, gameId }) => {
 		<div>
 			<p className="statusMessage"> Game ID: {gameId} </p>
 
-			<div id="board">
+			<div
+				id="board"
+				onMouseDown={(e) => {
+					const rect = document
+						.querySelector('#board')
+						.getBoundingClientRect()
+					if (
+						e.clientX >= rect.left &&
+						e.clientX <= rect.right &&
+						e.clientY >= rect.top &&
+						e.clientY <= rect.bottom
+					) {
+						const x = Math.floor((e.clientX - rect.left) / 64)
+						const y = Math.floor((e.clientY - rect.top) / 64)
+						const id = y * 11 + x
+						dragListener.startRecording(id)
+					}
+				}}
+				onMouseUp={(e) => {
+					const rect = document
+						.querySelector('#board')
+						.getBoundingClientRect()
+					if (
+						e.clientX >= rect.left &&
+						e.clientX <= rect.right &&
+						e.clientY >= rect.top &&
+						e.clientY <= rect.bottom
+					) {
+						const x = Math.floor((e.clientX - rect.left) / 64)
+						const y = Math.floor((e.clientY - rect.top) / 64)
+						const id = y * 11 + x
+						dragListener.stopRecording(id)
+					} else {
+						dragListener.cancelRecording()
+					}
+				}}>
 				{board.map((x, i) => (
 					<Cell id={i} value={x} key={i} back={boardBackground[i]} />
 				))}

@@ -38,14 +38,30 @@ const Game = ({ gameState, gameId }) => {
 		/* eslint-enable prettier/prettier */
 	])
 
-	const makeMove = useCallback(
+	const [selectedCell, setSelectedCell] = useState(null)
+	const [turn] = useState(true)
+
+	console.log(gameState)
+	const makeMove = (pos1, pos2) => {
+		console.log(`Making move fromm ${pos1} to ${pos2}`)
+	}
+	const drag = useCallback(
 		(pos1, pos2) => {
-			console.log(`Making move from ${pos1} to ${pos2}`)
+			if (pos1 === pos2) {
+				if (selectedCell) {
+					makeMove(selectedCell, pos1)
+					setSelectedCell(null)
+				} else if (turn) {
+					setSelectedCell(pos1)
+				}
+			} else if (turn) {
+				makeMove(pos1, pos2)
+			}
 		},
-		[gameState],
+		[selectedCell, turn],
 	)
 	useEffect(() => {
-		dragListener.setCallback(makeMove)
+		dragListener.setCallback(drag)
 	}, [makeMove])
 
 	return (

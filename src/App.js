@@ -52,6 +52,10 @@ const App = () => {
 		})
 	}, [])
 
+	const sendReady = () => {
+		socket.emit('READY!', gameId)
+	}
+
 	const menu = (
 		<div className="column">
 			<h1> VIKINGS </h1>
@@ -63,7 +67,9 @@ const App = () => {
 		<div className="column">
 			<Game gameState={gameState} gameId={gameId} />
 			<div className="column center-vertically">
-				<button disabled={gameState !== WAITING_READY}>
+				<button
+					disabled={gameState !== WAITING_READY}
+					onClick={() => sendReady()}>
 					{gameState === WAITING_OPPONENT
 						? 'Waiting for opponent'
 						: "I'm ready!"}

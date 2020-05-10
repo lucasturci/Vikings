@@ -28,7 +28,7 @@ function insideBoard(x, y) {
 	)
 }
 
-const Game = ({ gameState, gameId, player = 'W' }) => {
+const Game = ({ gameState, gameId }) => {
 	// State stuff
 	const [board, setBoard] = useState([
 		/* eslint-disable prettier/prettier */
@@ -46,7 +46,8 @@ const Game = ({ gameState, gameId, player = 'W' }) => {
 		/* eslint-enable prettier/prettier */
 	])
 	const [selectedCell, setSelectedCell] = useState(null)
-	const [turn] = useState(true)
+	const [turn] = useState(false)
+	const [player] = useState('W')
 	const [suggestedMoves, setSuggestedMoves] = useState([])
 
 	console.log(gameState)

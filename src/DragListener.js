@@ -6,17 +6,9 @@ class DragListener {
 		this.updateSprite = null
 		this.snap = null
 
-		const mouseMoveEvt = (e, isMobile) => {
-			const x = isMobile
-				? e.touches[0].pageX ||
-				  e.changedTouches[0].pageX ||
-				  e.targetTouches[0].pageY
-				: e.clientX
-			const y = isMobile
-				? e.touches[0].pageY ||
-				  e.changedTouches[0].pageY ||
-				  e.targetTouches[0].pageY
-				: e.clientY
+		const mouseMoveEvt = (e) => {
+			const x = e.clientX
+			const y = e.clientY
 
 			if (
 				x < 0 ||
@@ -35,9 +27,6 @@ class DragListener {
 		document
 			.querySelector('html')
 			.addEventListener('mousemove', (e) => mouseMoveEvt(e, false))
-		document
-			.querySelector('html')
-			.addEventListener('touchmove', (e) => mouseMoveEvt(e, true))
 	}
 
 	startRecording(pos1) {

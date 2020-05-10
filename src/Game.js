@@ -29,7 +29,7 @@ function insideBoard(x, y) {
 }
 
 const Game = ({ gameState, gameId }) => {
-	const dragListener = getDragListener()
+	// State stuff
 	const [board] = useState([
 		/* eslint-disable prettier/prettier */
 		'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
@@ -45,87 +45,53 @@ const Game = ({ gameState, gameId }) => {
 		'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
 		/* eslint-enable prettier/prettier */
 	])
-
 	const [selectedCell, setSelectedCell] = useState(null)
 	const [turn] = useState(true)
 	const [suggestedMoves, setSuggestedMoves] = useState([])
 
-	console.log(gameState)
-	const makeMove = (pos1, pos2) => {
-		console.log(`Making move fromm ${pos1} to ${pos2}`)
-	}
 	const drag = useCallback(
 		(pos1, pos2) => {
-			if (pos1 === pos2) {
-				if (selectedCell) {
-					makeMove(selectedCell, pos1)
-					setSelectedCell(null)
-				} else if (turn) {
-					setSelectedCell(pos1)
-					setSuggestedMoves(validTargets(board, pos1))
-				}
-			} else if (turn) {
+			if (pos1 != pos2 && turn) {
 				makeMove(pos1, pos2)
 			}
 		},
 		[selectedCell, turn],
 	)
 
+	const dragListener = getDragListener()
 	useEffect(() => {
 		dragListener.setCallback(drag)
 	}, [selectedCell, turn])
 	useEffect(() => {
-		const evt = (e, isMobile) => {
-			const x = isMobile
-				? e.touches[0].pageX ||
-				  e.changedTouches[0].pageX ||
-				  e.targetTouches[0].pageY
-				: e.clientX
-			const y = isMobile
-				? e.touches[0].pageY ||
-				  e.changedTouches[0].pageY ||
-				  e.targetTouches[0].pageY
-				: e.clientY
-			if (!insideBoard(x, y)) {
+		document.body.addEventListener('click', (e) => {
+			if (!insideBoard(e.clientX, e.clientY)) {
 				setSelectedCell(null)
 				setSuggestedMoves([])
 			}
-		}
-		document.body.addEventListener('click', (e) => evt(e, false))
-		document.body.addEventListener('touchstart', (e) => evt(e, true))
+		})
 		dragListener.setCallback(drag)
 	}, [])
 
-	const beginMove = (e, isMobile) => {
-		let x = isMobile
-			? e.touches[0].pageX ||
-			  e.changedTouches[0].pageX ||
-			  e.targetTouches[0].pageY
-			: e.clientX
-		let y = isMobile
-			? e.touches[0].pageY ||
-			  e.changedTouches[0].pageY ||
-			  e.targetTouches[0].pageY
-			: e.clientY
+	console.log(gameState)
+	const makeMove = (pos1, pos2) => {
+		console.log(`Making move from ${pos1} to ${pos2}`)
+	}
+
+	const mouseDown = (e) => {
+		let x = e.clientX
+		let y = e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
 		if (insideBoard(x, y)) {
 			x = Math.floor((x - rect.left) / 64)
 			y = Math.floor((y - rect.top) / 64)
 			const id = y * 11 + x
+			setSuggestedMoves(validTargets(board, id))
 			dragListener.startRecording(id)
 		}
 	}
-	const finishMove = (e, isMobile) => {
-		let x = isMobile
-			? e.touches[0].pageX ||
-			  e.changedTouches[0].pageX ||
-			  e.targetTouches[0].pageY
-			: e.clientX
-		let y = isMobile
-			? e.touches[0].pageY ||
-			  e.changedTouches[0].pageY ||
-			  e.targetTouches[0].pageY
-			: e.clientY
+	const mouseUp = (e) => {
+		let x = e.clientX
+		let y = e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
 		if (insideBoard(x, y)) {
 			x = Math.floor((x - rect.left) / 64)
@@ -136,22 +102,32 @@ const Game = ({ gameState, gameId }) => {
 			dragListener.cancelRecording()
 		}
 	}
+
+	const cellClick = (id) => {
+		setSuggestedMoves(validTargets(board, id))
+		if (selectedCell) {
+			makeMove(selectedCell, id)
+			setSelectedCell(null)
+		} else if (turn) {
+			setSelectedCell(id)
+		}
+	}
+
 	return (
 		<div>
 			<p className="statusMessage"> Game ID: {gameId} </p>
 
 			<div
 				id="board"
-				onMouseDown={(e) => beginMove(e, false)}
-				onTouchStart={(e) => beginMove(e, true)}
-				onMouseUp={(e) => finishMove(e, false)}
-				onTouchEnd={(e) => finishMove(e, true)}>
+				onMouseDown={(e) => mouseDown(e)}
+				onMouseUp={(e) => mouseUp(e)}>
 				{board.map((x, i) => (
 					<Cell
 						id={i}
 						value={x}
 						key={i}
 						back={boardBackground[i]}
+						onClick={() => cellClick(i)}
 						glowing={suggestedMoves.includes(i)}
 					/>
 				))}

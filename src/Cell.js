@@ -12,7 +12,7 @@ import BlackPiece from '../assets/black-piece.svg'
 import WhitePiece from '../assets/white-piece.svg'
 import KingPiece from '../assets/king-piece.svg'
 
-const Cell = ({ value, back, glowing }) => {
+const Cell = ({ value, back, onClick, glowing }) => {
 	return (
 		<div
 			className={`cell noselect ${glowing ? 'glowing' : ''}`}
@@ -25,7 +25,8 @@ const Cell = ({ value, back, glowing }) => {
 						: back === 'W'
 						? `url(${WhiteCell})`
 						: `url(${BlackCell})`,
-			}}>
+			}}
+			onClick={onClick}>
 			<div style={{ position: 'relative' }}>
 				{value !== '.' ? (
 					<Sprite

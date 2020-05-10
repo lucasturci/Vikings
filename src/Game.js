@@ -1,25 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import getDragListener from './DragListener'
 import Cell from './Cell'
-import { validTargets, isMoveValid, swapPositionsOfBoard } from './GameUtils'
+import {
+	validTargets,
+	isMoveValid,
+	swapPositionsOfBoard,
+	initialBoard,
+	boardBackground,
+} from './GameUtils'
 import './style.css'
 import './game.css'
-
-const boardBackground = [
-	/* eslint-disable prettier/prettier */
-	'C', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', 'C',
-	'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
-	'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-	'B', '.', '.', '.', '.', 'W', '.', '.', '.', '.', 'B',
-	'B', '.', '.', '.', 'W', 'W', 'W', '.', '.', '.', 'B',
-	'B', 'B', '.', 'W', 'W', 'C', 'W', 'W', '.', 'B', 'B',
-	'B', '.', '.', '.', 'W', 'W', 'W', '.', '.', '.', 'B',
-	'B', '.', '.', '.', '.', 'W', '.', '.', '.', '.', 'B',
-	'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-	'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
-	'C', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', 'C',
-	/* eslint-enable prettier/prettier */
-]
 
 function insideBoard(x, y) {
 	const rect = document.querySelector('#board').getBoundingClientRect()
@@ -30,21 +20,7 @@ function insideBoard(x, y) {
 
 const Game = ({ gameState, gameId }) => {
 	// State stuff
-	const [board, setBoard] = useState([
-		/* eslint-disable prettier/prettier */
-		'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
-		'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
-		'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-		'B', '.', '.', '.', '.', 'W', '.', '.', '.', '.', 'B',
-		'B', '.', '.', '.', 'W', 'W', 'W', '.', '.', '.', 'B',
-		'B', 'B', '.', 'W', 'W', 'K', 'W', 'W', '.', 'B', 'B',
-		'B', '.', '.', '.', 'W', 'W', 'W', '.', '.', '.', 'B',
-		'B', '.', '.', '.', '.', 'W', '.', '.', '.', '.', 'B',
-		'.', '.', '.', '.', '.', '.', '.', '.', '.', '.', '.',
-		'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
-		'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
-		/* eslint-enable prettier/prettier */
-	])
+	const [board, setBoard] = useState(initialBoard)
 	const [selectedCell, setSelectedCell] = useState(null)
 	const [turn] = useState(false)
 	const [player] = useState('W')

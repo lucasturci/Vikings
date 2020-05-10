@@ -19,14 +19,21 @@ export function toMatrix(board) {
 	return mat
 }
 
-export function validTargets(board, id) {
+const kingCells = [0, 10, 110, 120]
+
+/* 	Returns an array with valid cells where you can move from position id
+ *	board is the array with positions
+ *	player is who you are playing with ('B' or 'W')
+ *	id is the position from which you wanna move
+ */
+export function validTargets(board, player, id) {
+	if (board[id] !== player && !(board[id] === 'K' && player === 'W'))
+		return []
 	const mat = toMatrix(board)
 
-	console.log(mat[4][8])
 	const targets = []
 
 	const [p, q] = toMatrixCoordinate(id)
-	console.log(p, q)
 	for (let j = q + 1; j < 11 && mat[p][j] == '.'; j++) {
 		targets.push(toLinearCoordinate(p, j))
 	}
@@ -43,6 +50,31 @@ export function validTargets(board, id) {
 		targets.push(toLinearCoordinate(i, q))
 	}
 
-	console.log(targets)
+	// remove forbidden king cells
+	if (board[id] !== 'K') {
+		kingCells.forEach((x) => {
+			if (targets.includes(x)) {
+				targets.splice(targets.indexOf(x), 1)
+			}
+		})
+	}
 	return targets
+}
+
+/*
+	Checks if move from pos1 to pos2 is valid
+	board: current configuration of the board
+	player: which player you're playing with ('W' or 'B')
+*/
+export function isMoveValid(board, player, pos1, pos2) {
+	const targets = validTargets(board, player, pos1)
+
+	return targets.includes(pos2)
+}
+
+// Swaps two position of a board and returns a new board
+export function swapPositionsOfBoard(board, pos1, pos2) {
+	return board.map((x, i) =>
+		i == pos1 ? board[pos2] : i == pos2 ? board[pos1] : x,
+	)
 }

@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import getDragListener from './DragListener'
 import Cell from './Cell'
-import { validTargets } from './GameUtils'
+import { validTargets, isMoveValid, swapPositionsOfBoard } from './GameUtils'
 import './style.css'
 import './game.css'
 
@@ -28,9 +28,9 @@ function insideBoard(x, y) {
 	)
 }
 
-const Game = ({ gameState, gameId }) => {
+const Game = ({ gameState, gameId, player = 'W' }) => {
 	// State stuff
-	const [board] = useState([
+	const [board, setBoard] = useState([
 		/* eslint-disable prettier/prettier */
 		'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
 		'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
@@ -49,13 +49,25 @@ const Game = ({ gameState, gameId }) => {
 	const [turn] = useState(true)
 	const [suggestedMoves, setSuggestedMoves] = useState([])
 
+	console.log(gameState)
+	const makeMove = (pos1, pos2) => {
+		console.log(`Making move from ${pos1} to ${pos2}`)
+		setBoard((board) => swapPositionsOfBoard(board, pos1, pos2))
+		console.log('Changing turn')
+	}
 	const drag = useCallback(
 		(pos1, pos2) => {
-			if (pos1 != pos2 && turn) {
+			if (
+				pos1 !== pos2 &&
+				turn &&
+				isMoveValid(board, player, pos1, pos2)
+			) {
 				makeMove(pos1, pos2)
+				setSelectedCell(null)
+				setSuggestedMoves([])
 			}
 		},
-		[selectedCell, turn],
+		[turn, board],
 	)
 
 	const dragListener = getDragListener()
@@ -72,11 +84,6 @@ const Game = ({ gameState, gameId }) => {
 		dragListener.setCallback(drag)
 	}, [])
 
-	console.log(gameState)
-	const makeMove = (pos1, pos2) => {
-		console.log(`Making move from ${pos1} to ${pos2}`)
-	}
-
 	const mouseDown = (e) => {
 		let x = e.clientX
 		let y = e.clientY
@@ -85,7 +92,15 @@ const Game = ({ gameState, gameId }) => {
 			x = Math.floor((x - rect.left) / 64)
 			y = Math.floor((y - rect.top) / 64)
 			const id = y * 11 + x
-			setSuggestedMoves(validTargets(board, id))
+
+			if (
+				!selectedCell ||
+				!isMoveValid(board, player, selectedCell, id)
+			) {
+				setSuggestedMoves(validTargets(board, player, id))
+				setSelectedCell(id)
+			}
+
 			dragListener.startRecording(id)
 		}
 	}
@@ -104,12 +119,14 @@ const Game = ({ gameState, gameId }) => {
 	}
 
 	const cellClick = (id) => {
-		setSuggestedMoves(validTargets(board, id))
-		if (selectedCell) {
-			makeMove(selectedCell, id)
-			setSelectedCell(null)
-		} else if (turn) {
-			setSelectedCell(id)
+		if (turn) {
+			setSuggestedMoves(validTargets(board, player, id))
+			if (selectedCell && isMoveValid(board, player, selectedCell, id)) {
+				makeMove(selectedCell, id)
+				setSelectedCell(null)
+			} else {
+				setSelectedCell(id)
+			}
 		}
 	}
 

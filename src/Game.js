@@ -73,6 +73,7 @@ const Game = ({ gameState, gameId }) => {
 		socket.on('YOU ARE PLAYER', (p) => {
 			setPlayer(p)
 			setBoard(initialBoard)
+			setLastMove([])
 		})
 
 		socket.on('UPDATE BOARD', (board) => {

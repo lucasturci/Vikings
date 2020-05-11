@@ -12,7 +12,7 @@ const MENU = 'MENU'
 const WAITING_OPPONENT = 'WAITING_OPPONENT'
 const WAITING_READY = 'WAITING_READY'
 const PLAYING = 'PLAYING'
-// const FINISHED = 'FINISHED'
+const OVER = 'OVER'
 
 const App = () => {
 	const socket = useContext(getSocketContext())
@@ -63,6 +63,18 @@ const App = () => {
 		socket.on('STARTING', () => {
 			setGameState(PLAYING)
 		})
+
+		/* 
+			Description: Game is over
+            What should we do?
+			- Change game state to OVER
+			- Maybe show an animation on the middle of the screen saying you lost?
+			- set ready to false, so you can rematch if you want
+        */
+		socket.on('GAME OVER', () => {
+			setGameState(OVER)
+			setReady(false)
+		})
 	}, [])
 
 	const sendReady = () => {
@@ -83,13 +95,18 @@ const App = () => {
 			<div id="sidebar">
 				<button
 					className="btn"
-					disabled={gameState !== WAITING_READY || ready}
+					disabled={
+						(gameState !== WAITING_READY && gameState !== OVER) ||
+						ready
+					}
 					onClick={() => sendReady()}>
 					{gameState === WAITING_OPPONENT
 						? 'Waiting for opponent'
 						: gameState === WAITING_READY
 						? "I'm ready!"
-						: 'GO!'}
+						: gameState === PLAYING
+						? 'GO!'
+						: 'I want a rematch!'}
 				</button>
 
 				<ChatWidget />

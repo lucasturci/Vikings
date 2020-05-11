@@ -164,6 +164,43 @@ function checksEaten(board, pos, enemy) {
 	return false
 }
 
+/*
+	Checks if:
+	- King has reached target cells
+	- King was trapped
+	- There are no black pieces
+
+	// Returns 0 if game is ot over
+	// Returns 1 if white has won
+	// Returns 2 if black has won
+*/
+function checkGameOver(board) {
+	const kingPos = board.indexOf('K')
+	// Checks if king has reached target cell
+	if (kingCells.filter((x) => x !== middleCell).includes(kingPos)) {
+		// white won
+		return 1
+	}
+
+	// Checks if there are no black pieces
+	if (
+		board.reduce((cur, x) => {
+			return cur + (x === 'B' ? 1 : 0)
+		}, 0) === 0
+	) {
+		// white won
+		return 1
+	}
+
+	// Checks if king is trapped
+	if (checksEaten(board, kingPos)) {
+		// black won
+		return 2
+	}
+
+	return 0
+}
+
 module.exports = {
 	isMoveValid,
 	swapPositionsOfBoard,
@@ -171,4 +208,5 @@ module.exports = {
 	initialBoard,
 	boardBackground,
 	checksEaten,
+	checkGameOver,
 }

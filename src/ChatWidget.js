@@ -28,6 +28,15 @@ const ChatWidget = () => {
 				}),
 			)
 		})
+
+		socket.on('GAME OVER', (won) => {
+			setMessages((messages) =>
+				messages.concat({
+					from: null,
+					content: won ? 'You won!' : 'You lost!',
+				}),
+			)
+		})
 	}, [])
 
 	const sendMessage = () => {

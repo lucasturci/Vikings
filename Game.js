@@ -2,6 +2,7 @@ const {
 	initialBoard,
 	swapPositionsOfBoard,
 	checksEaten,
+	checkGameOver,
 } = require('./src/GameUtils')
 
 class Game {
@@ -58,31 +59,64 @@ class Game {
 		this.turn = 1
 	}
 
+	/* Game is over
+	 * - Emit messages to the players sending who won and who lost
+	 * - Clears stuff for next game
+	 */
+
+	gameOver(winner) {
+		this.socketInstance.to(this.players[winner]).emit('GAME OVER', true)
+		this.socketInstance
+			.to(this.players[1 - winner])
+			.emit('GAME OVER', false)
+
+		// Clear stuff for next game
+		this.started = false
+		this.players = [this.players[1], this.players[0]] // swap the two players
+		this.ready = [false, false]
+	}
+
 	// Returns new board after the move pos1 => pos2
 	// Assumes the move is valid, and just updates the board accordingly and checks if someone won or a draw happened (?)
 	move(board, pos1, pos2) {
+		if (!this.started) {
+			console.log('ERROR! Received move when game is not started')
+		}
 		this.board = swapPositionsOfBoard(board, pos1, pos2)
 		if (checksEaten(this.board, pos2 + 1, pos2)) {
-			this.board[pos2 + 1] = '.'
+			if (this.board[pos2 + 1] !== 'K') this.board[pos2 + 1] = '.'
 		}
 		if (checksEaten(this.board, pos2 - 1, pos2)) {
-			this.board[pos2 - 1] = '.'
+			if (this.board[pos2 - 1] !== 'K') this.board[pos2 - 1] = '.'
 		}
 		if (checksEaten(this.board, pos2 + 11, pos2)) {
-			this.board[pos2 + 11] = '.'
+			if (this.board[pos2 + 11] !== 'K') this.board[pos2 + 11] = '.'
 		}
 		if (checksEaten(this.board, pos2 - 11, pos2)) {
-			this.board[pos2 - 11] = '.'
+			if (this.board[pos2 - 11] !== 'K') this.board[pos2 - 11] = '.'
 		}
 
 		// WILL CHECK IF GAME IS OVER
+		const over = checkGameOver(this.board)
+		if (over) {
+			// game is over
+			if (over === 1) {
+				// white won
+				this.gameOver(0)
+			} else {
+				// black won
+				this.gameOver(1)
+			}
+		}
 
 		this.turn = 1 - this.turn
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', this.board)
-		this.socketInstance.to(this.players[this.turn]).emit('YOUR TURN')
 		this.socketInstance
 			.to(this.players[this.turn])
 			.emit('UPDATE LAST MOVE', pos1, pos2)
+		if (!over)
+			// If game is not over, send the turn to next player
+			this.socketInstance.to(this.players[this.turn]).emit('YOUR TURN')
 	}
 }
 

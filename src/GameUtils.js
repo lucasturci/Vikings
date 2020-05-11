@@ -19,7 +19,7 @@ function toMatrix(board) {
 	return mat
 }
 
-const kingCells = [0, 10, 110, 120]
+const kingCells = [0, 10, 60, 110, 120]
 
 const boardBackground = [
 	/* eslint-disable prettier/prettier */

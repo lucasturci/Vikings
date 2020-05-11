@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import getDragListener from './DragListener'
 import Cell from './Cell'
 import {
@@ -10,6 +10,7 @@ import {
 } from './GameUtils'
 import './style.css'
 import './game.css'
+import { getSocketContext } from './SocketContext'
 
 function insideBoard(x, y) {
 	const rect = document.querySelector('#board').getBoundingClientRect()
@@ -20,17 +21,20 @@ function insideBoard(x, y) {
 
 const Game = ({ gameState, gameId }) => {
 	// State stuff
-	const [board, setBoard] = useState(initialBoard)
+	const [board, setBoard] = useState(new Array(121).fill('.'))
 	const [selectedCell, setSelectedCell] = useState(null)
-	const [turn] = useState(false)
-	const [player] = useState('W')
+	const [turn, setTurn] = useState(false)
+	const [player, setPlayer] = useState('W')
 	const [suggestedMoves, setSuggestedMoves] = useState([])
+
+	const socket = useContext(getSocketContext())
 
 	console.log(gameState)
 	const makeMove = (pos1, pos2) => {
 		console.log(`Making move from ${pos1} to ${pos2}`)
 		setBoard((board) => swapPositionsOfBoard(board, pos1, pos2))
 		console.log('Changing turn')
+		setTurn(false)
 	}
 	const drag = useCallback(
 		(pos1, pos2) => {
@@ -59,6 +63,17 @@ const Game = ({ gameState, gameId }) => {
 			}
 		})
 		dragListener.setCallback(drag)
+
+		// SOCKET STUFF
+
+		socket.on('YOU ARE PLAYER', (p) => {
+			setPlayer(p)
+			setBoard(initialBoard)
+		})
+		socket.on('YOUR TURN', (board) => {
+			setBoard(board)
+			setTurn(true)
+		})
 	}, [])
 
 	const mouseDown = (e) => {
@@ -71,8 +86,8 @@ const Game = ({ gameState, gameId }) => {
 			const id = y * 11 + x
 
 			if (
-				!selectedCell ||
-				!isMoveValid(board, player, selectedCell, id)
+				turn &&
+				(!selectedCell || !isMoveValid(board, player, selectedCell, id))
 			) {
 				setSuggestedMoves(validTargets(board, player, id))
 				setSelectedCell(id)

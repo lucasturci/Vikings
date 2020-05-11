@@ -1,3 +1,5 @@
+const { initialBoard } = require('./src/GameUtils')
+
 class Game {
 	constructor(socketInstance, roomId) {
 		this.max_players = 2
@@ -35,7 +37,7 @@ class Game {
 		this.socketInstance.in(this.roomId).emit('STARTING')
 		this.socketInstance.to(this.players[0]).emit('YOU ARE PLAYER', 'W')
 		this.socketInstance.to(this.players[1]).emit('YOU ARE PLAYER', 'B')
-		this.socketInstance.to(this.players[1]).emit('YOUR TURN')
+		this.socketInstance.to(this.players[1]).emit('YOUR TURN', initialBoard)
 	}
 }
 

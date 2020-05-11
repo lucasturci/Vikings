@@ -6,7 +6,7 @@ function toLinearCoordinate(i, j) {
 	return i * 11 + j
 }
 
-export function toMatrix(board) {
+function toMatrix(board) {
 	let mat = new Array(11)
 
 	let cur = 0
@@ -21,7 +21,7 @@ export function toMatrix(board) {
 
 const kingCells = [0, 10, 110, 120]
 
-export const boardBackground = [
+const boardBackground = [
 	/* eslint-disable prettier/prettier */
 	'C', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', 'C',
 	'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
@@ -37,7 +37,7 @@ export const boardBackground = [
 	/* eslint-enable prettier/prettier */
 ]
 
-export const initialBoard = [
+const initialBoard = [
 	/* eslint-disable prettier/prettier */
 	'.', '.', '.', 'B', 'B', 'B', 'B', 'B', '.', '.', '.',
 	'.', '.', '.', '.', '.', 'B', '.', '.', '.', '.', '.',
@@ -58,7 +58,7 @@ export const initialBoard = [
  *	player is who you are playing with ('B' or 'W')
  *	id is the position from which you wanna move
  */
-export function validTargets(board, player, id) {
+function validTargets(board, player, id) {
 	if (board[id] !== player && !(board[id] === 'K' && player === 'W'))
 		return []
 	const mat = toMatrix(board)
@@ -98,15 +98,23 @@ export function validTargets(board, player, id) {
 	board: current configuration of the board
 	player: which player you're playing with ('W' or 'B')
 */
-export function isMoveValid(board, player, pos1, pos2) {
+function isMoveValid(board, player, pos1, pos2) {
 	const targets = validTargets(board, player, pos1)
 
 	return targets.includes(pos2)
 }
 
 // Swaps two position of a board and returns a new board
-export function swapPositionsOfBoard(board, pos1, pos2) {
+function swapPositionsOfBoard(board, pos1, pos2) {
 	return board.map((x, i) =>
 		i == pos1 ? board[pos2] : i == pos2 ? board[pos1] : x,
 	)
+}
+
+module.exports = {
+	isMoveValid,
+	swapPositionsOfBoard,
+	validTargets,
+	initialBoard,
+	boardBackground,
 }

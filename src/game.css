@@ -1,10 +1,10 @@
 #board {
-	width: 706px;
+	width: 704px;
 	height: 704px;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	border: 1px solid black;
+	border: 5px ridge rgb(207, 158, 33);
 }
 
 .cell {

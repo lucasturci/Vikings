@@ -11,7 +11,7 @@ import { getSocketContext } from './SocketContext'
 const MENU = 'MENU'
 const WAITING_OPPONENT = 'WAITING_OPPONENT'
 const WAITING_READY = 'WAITING_READY'
-// const PLAYING = 'PLAYING'
+const PLAYING = 'PLAYING'
 // const FINISHED = 'FINISHED'
 
 const App = () => {
@@ -50,6 +50,17 @@ const App = () => {
         */
 		socket.on('READY?', () => {
 			setGameState(WAITING_READY)
+		})
+
+		/* 
+			Description: When both players are ready, server emits a 'STARTING' message, which indicates 
+			that the game has started
+            What should we do?
+            - Change game state to PLAYING
+            - From this point on, who handles the communication with the socket is the Game Component
+        */
+		socket.on('STARTING', () => {
+			setGameState(PLAYING)
 		})
 	}, [])
 

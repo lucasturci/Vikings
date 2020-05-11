@@ -11,6 +11,7 @@ import {
 import './style.css'
 import './game.css'
 import { getSocketContext } from './SocketContext'
+import LightOn from '../assets/light-on.svg'
 
 function insideBoard(x, y) {
 	const rect = document.querySelector('#board').getBoundingClientRect()
@@ -128,7 +129,10 @@ const Game = ({ gameState, gameId }) => {
 
 	return (
 		<div>
-			<p className="statusMessage"> Game ID: {gameId} </p>
+			<p className="statusMessage">
+				<span>Game ID: {gameId}</span>
+				{turn ? <img src={LightOn}></img> : null}
+			</p>
 
 			<div
 				id="board"

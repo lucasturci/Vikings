@@ -41,7 +41,16 @@ class Game {
 
 		this.socketInstance.in(this.roomId).emit('STARTING')
 		this.socketInstance.to(this.players[0]).emit('YOU ARE PLAYER', 'W')
+		this.socketInstance
+			.to(this.players[0])
+			.emit('GAME MESSAGE', 'You are the defender!')
 		this.socketInstance.to(this.players[1]).emit('YOU ARE PLAYER', 'B')
+		this.socketInstance
+			.to(this.players[1])
+			.emit('GAME MESSAGE', 'You are the attacker!')
+		this.socketInstance
+			.to(this.players[1])
+			.emit('GAME MESSAGE', 'You move!')
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', initialBoard)
 		this.socketInstance.to(this.players[1]).emit('YOUR TURN')
 

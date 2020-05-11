@@ -28,17 +28,6 @@ const ChatWidget = () => {
 				}),
 			)
 		})
-
-		socket.on('YOU ARE PLAYER', (p) => {
-			const message =
-				p === 'W' ? 'You are the defender!' : 'You are the attacker!'
-			setMessages((messages) =>
-				messages.concat({
-					from: null,
-					content: message,
-				}),
-			)
-		})
 	}, [])
 
 	const sendMessage = () => {

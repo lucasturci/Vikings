@@ -17,6 +17,7 @@ const PLAYING = 'PLAYING'
 const App = () => {
 	const socket = useContext(getSocketContext())
 
+	const [ready, setReady] = useState(false)
 	const [gameState, setGameState] = useState(MENU)
 	const [gameId, setGameId] = useState(null)
 	useEffect(() => {
@@ -65,6 +66,7 @@ const App = () => {
 	}, [])
 
 	const sendReady = () => {
+		setReady(true)
 		socket.emit('READY!', gameId)
 	}
 
@@ -81,11 +83,13 @@ const App = () => {
 			<div id="sidebar">
 				<button
 					className="btn"
-					disabled={gameState !== WAITING_READY}
+					disabled={gameState !== WAITING_READY || ready}
 					onClick={() => sendReady()}>
 					{gameState === WAITING_OPPONENT
 						? 'Waiting for opponent'
-						: "I'm ready!"}
+						: gameState === WAITING_READY
+						? "I'm ready!"
+						: 'GO!'}
 				</button>
 
 				<ChatWidget />

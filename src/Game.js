@@ -32,6 +32,7 @@ const Game = ({ gameState, gameId }) => {
 	console.log(gameState)
 	const makeMove = (pos1, pos2) => {
 		console.log(`Making move from ${pos1} to ${pos2}`)
+		socket.emit('MOVE', board, pos1, pos2)
 		setBoard((board) => swapPositionsOfBoard(board, pos1, pos2))
 		console.log('Changing turn')
 		setTurn(false)
@@ -70,8 +71,11 @@ const Game = ({ gameState, gameId }) => {
 			setPlayer(p)
 			setBoard(initialBoard)
 		})
-		socket.on('YOUR TURN', (board) => {
+
+		socket.on('UPDATE BOARD', (board) => {
 			setBoard(board)
+		})
+		socket.on('YOUR TURN', () => {
 			setTurn(true)
 		})
 	}, [])

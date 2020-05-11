@@ -106,6 +106,13 @@ io.on('connection', (socket) => {
 		})
 	})
 
+	socket.on('MOVE', (board, pos1, pos2) => {
+		const roomId = roomsOfSocket.get(socket.id)
+		const game = games.get(roomId)
+		console.log('New move from ', pos1, pos2)
+		game.move(board, pos1, pos2)
+	})
+
 	socket.on('disconnect', () => {
 		if (roomsOfSocket.has(socket.id)) {
 			const roomId = roomsOfSocket.get(socket.id)

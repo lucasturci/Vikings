@@ -19,6 +19,7 @@ function toMatrix(board) {
 	return mat
 }
 
+const middleCell = 60
 const kingCells = [0, 10, 60, 110, 120]
 
 const boardBackground = [
@@ -111,10 +112,63 @@ function swapPositionsOfBoard(board, pos1, pos2) {
 	)
 }
 
+// Returns if position is inside bounds
+function valid(pos) {
+	return pos >= 0 && pos < 121
+}
+
+/*
+	Returns if a and b (which can be 'W', 'K', or 'B') are of the opposite side
+*/
+function opposite(a, b) {
+	return (a === 'B') !== (b === 'B')
+}
+
+/*
+	Checks if enemy arriving at 'enemy' position caused the piece in 'pos' position to be taken
+*/
+function checksEaten(board, pos, enemy) {
+	if (!valid(pos) || board[pos] === '.') return false
+
+	if (board[pos] === 'K') {
+		// calculate differently, checks if there is '.' or 'W' on the four sides
+		// since enemy is definitely one of occupied sides of the king, it doesn't depend on it.
+		const dirs = [+1, -1, +11, -11]
+
+		let flag = true
+		dirs.forEach((dir) => {
+			if (valid(pos + dir) && ['.', 'W'].includes(board[pos + dir]))
+				flag = false
+		})
+		return flag
+	} else if (opposite(board[pos], board[enemy])) {
+		const dirs = [+1, -1, +11, -11]
+
+		const hostileSquares = kingCells
+		if (board[pos] === 'W' && board[middleCell] == 'K')
+			hostileSquares.splice(2, 1) // remove that, because it is not hostile to white
+
+		let flag = false
+		dirs.forEach((dir) => {
+			if (
+				enemy === pos + dir &&
+				valid(pos - dir) &&
+				((board[pos - dir] !== '.' &&
+					opposite(board[pos - dir], board[pos])) ||
+					hostileSquares.includes(pos - dir))
+			)
+				flag = true
+		})
+		return flag
+	}
+	return false
+}
+
 module.exports = {
 	isMoveValid,
 	swapPositionsOfBoard,
 	validTargets,
 	initialBoard,
 	boardBackground,
+	checksEaten,
 }

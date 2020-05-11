@@ -21,6 +21,8 @@ body {
 	height: 704px;
 	display: flex;
 	flex-direction: column;
+	width: 250px;
+	align-items: center;
 }
 
 .grow {
@@ -30,6 +32,7 @@ body {
 #input-row {
 	display: flex;
 	flex-direction: row;
+	width: 100%;
 }
 
 #send-button {
@@ -43,14 +46,25 @@ body {
 	overflow: auto;
 	border-radius: 5px;
 	border: 1px solid #dadadf;
+	width: 100%;
+	box-sizing: border-box;
 }
+
+.wordwrap { 
+	white-space: pre-wrap;      /* CSS3 */   
+	white-space: -moz-pre-wrap; /* Firefox */    
+	white-space: -pre-wrap;     /* Opera <7 */   
+	white-space: -o-pre-wrap;   /* Opera 7 */    
+	word-wrap: break-word;      /* IE */
+ }
 
 #chat-input {
 	padding: 5px;
 	border-radius: 5px;
 	border: 1px solid #dadadf;
 	line-height: 2;
-	width: 200px;
+	flex-grow: 1;
+	box-sizing: border-box;
 }
 
 .center-vertically {

@@ -7,7 +7,6 @@ const http = require('http').Server(app)
 const io = require('socket.io')(http)
 const crypto = require('crypto')
 
-const max_in_room = 2
 const port = 8081
 const webport = 80
 http.listen(port, () => {

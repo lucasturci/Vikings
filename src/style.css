@@ -27,19 +27,6 @@ body {
 	align-items: center;
 }
 
-@media screen and (max-width: 768px) {
-	#game-container {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
-	#sidebar {
-		margin-top: 1rem;
-		width: 220px;
-		margin-bottom: 2rem;
-	}
-}
 
 .grow {
 	flex-grow: 1;
@@ -185,4 +172,46 @@ h1 {
 
 .mt2 {
     margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+	#game-container {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	#sidebar {
+		margin-top: 1rem;
+		width: 275px;
+		margin-bottom: 2rem;
+		margin-left: 0;
+	}
+
+	button.smaller {
+		font-size: 20px;
+		padding: 10px;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		width: 275px;
+	}
+
+	button.smaller:disabled {
+		font-size: 20px;
+		padding: 10px;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		width: 275px;
+	}
+
+	button.smaller:hover {
+		font-size: 20px;
+		padding: 10px;
+		-webkit-border-radius: 10px;
+		-moz-border-radius: 10px;
+		border-radius: 10px;
+		width: 275px;
+	}
 }

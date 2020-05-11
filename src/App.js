@@ -94,7 +94,7 @@ const App = () => {
 			<Game gameState={gameState} gameId={gameId} />
 			<div id="sidebar">
 				<button
-					className="btn"
+					className="btn smaller"
 					disabled={
 						(gameState !== WAITING_READY && gameState !== OVER) ||
 						ready

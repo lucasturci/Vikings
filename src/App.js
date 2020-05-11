@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import Menu from './Menu'
 import './style.css'
 import Game from './Game'
+import ChatWidget from './ChatWidget'
 /* import {useState, useContext, useCallback } from 'react' */
 
 import { getSocketContext } from './SocketContext'
@@ -64,16 +65,19 @@ const App = () => {
 	)
 
 	const game = (
-		<div className="column">
+		<div id="game-container">
 			<Game gameState={gameState} gameId={gameId} />
-			<div className="column center-vertically">
+			<div id="sidebar">
 				<button
+					className="btn"
 					disabled={gameState !== WAITING_READY}
 					onClick={() => sendReady()}>
 					{gameState === WAITING_OPPONENT
 						? 'Waiting for opponent'
 						: "I'm ready!"}
 				</button>
+
+				<ChatWidget />
 			</div>
 		</div>
 	)

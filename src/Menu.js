@@ -22,7 +22,7 @@ const Menu = () => {
 
 	return (
 		<div className="column center-vertically">
-			<button onClick={() => createRoom()} className="up20">
+			<button onClick={() => createRoom()} className="up20 btn">
 				NEW GAME
 			</button>
 			<p className="up20 mt2"> Or enter existing: </p>

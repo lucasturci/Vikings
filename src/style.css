@@ -9,6 +9,50 @@ body {
     height: 100%;
 }
 
+#game-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+#sidebar {
+	margin-left: 1rem;
+	height: 704px;
+	display: flex;
+	flex-direction: column;
+}
+
+.grow {
+	flex-grow: 1;
+}
+
+#input-row {
+	display: flex;
+	flex-direction: row;
+}
+
+#send-button {
+	height: 100%;
+}
+
+#chat {
+	margin: 1rem 0;
+	background: rgb(243, 243, 243);
+	padding: 10px;
+	overflow: auto;
+	border-radius: 5px;
+	border: 1px solid #dadadf;
+}
+
+#chat-input {
+	padding: 5px;
+	border-radius: 5px;
+	border: 1px solid #dadadf;
+	line-height: 2;
+	width: 200px;
+}
+
 .center-vertically {
     justify-content: center;
     align-items: center;
@@ -21,7 +65,7 @@ h1 {
     font-family: 'Fondamento', cursive;
 }
 
-button {
+.btn {
     font-family: inherit;
     border: solid #337FED 0px;
     background: #D0371E;
@@ -47,7 +91,7 @@ button {
     text-align: center;
 }
 
-button:hover {
+.btn:hover {
     border: solid #337FED 0px;
     background: #992714;
     background-image: -webkit-linear-gradient(top, #992714, #CFA422);
@@ -61,7 +105,7 @@ button:hover {
     text-decoration: none;
 }
 
-button:disabled {
+.btn:disabled {
     font-family: inherit;
     border: solid #337FED 0px;
     background: #D17768;

@@ -19,6 +19,26 @@ const ChatWidget = () => {
 		socket.on('CHAT MESSAGE', (msg) => {
 			setMessages((messages) => messages.concat(msg))
 		})
+
+		socket.on('GAME MESSAGE', (msg) => {
+			setMessages((messages) =>
+				messages.concat({
+					from: null,
+					content: msg,
+				}),
+			)
+		})
+
+		socket.on('YOU ARE PLAYER', (p) => {
+			const message =
+				p === 'W' ? 'You are the defender!' : 'You are the attacker!'
+			setMessages((messages) =>
+				messages.concat({
+					from: null,
+					content: message,
+				}),
+			)
+		})
 	}, [])
 
 	const sendMessage = () => {

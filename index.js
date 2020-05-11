@@ -51,6 +51,12 @@ io.on('connection', (socket) => {
 		socket.join(roomId)
 
 		io.to(socket.id).emit('JOINED', roomId)
+		setTimeout(() => {
+			io.in(roomId).emit(
+				'GAME MESSAGE',
+				`User ${socket.id.substr(0, 3)} has just joined`,
+			)
+		}, 300)
 	})
 
 	socket.on('JOIN', (gameId) => {
@@ -67,7 +73,16 @@ io.on('connection', (socket) => {
 			}
 
 			io.to(socket.id).emit('JOINED', gameId)
+
 			socket.join(gameId)
+
+			setTimeout(() => {
+				io.in(gameId).emit(
+					'GAME MESSAGE',
+					`User ${socket.id.substr(0, 3)} has just joined`,
+				)
+			}, 300)
+
 			roomsOfSocket.set(socket.id, gameId)
 
 			if (game.full()) {
@@ -96,7 +111,10 @@ io.on('connection', (socket) => {
 			const roomId = roomsOfSocket.get(socket.id)
 			const game = games.get(roomId)
 
-			io.in(roomId).emit(`User ${socket.id} disconnected`)
+			io.in(roomId).emit(
+				'GAME MESSAGE',
+				`User ${socket.id.substr(0, 3)} has left`,
+			)
 			roomsOfSocket.delete(socket.id)
 
 			game.removePlayer(socket.id)

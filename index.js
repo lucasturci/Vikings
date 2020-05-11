@@ -83,6 +83,14 @@ io.on('connection', (socket) => {
 		game.playerReady(socket.id)
 	})
 
+	socket.on('CHAT MESSAGE', (msg) => {
+		const roomId = roomsOfSocket.get(socket.id)
+		socket.to(roomId).emit('CHAT MESSAGE', {
+			from: socket.id.substr(0, 3),
+			content: msg,
+		})
+	})
+
 	socket.on('disconnect', () => {
 		if (roomsOfSocket.has(socket.id)) {
 			const roomId = roomsOfSocket.get(socket.id)

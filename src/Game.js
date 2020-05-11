@@ -23,6 +23,7 @@ function insideBoard(x, y) {
 const Game = ({ gameState, gameId }) => {
 	// State stuff
 	const [board, setBoard] = useState(new Array(121).fill('.'))
+	const [lastMove, setLastMove] = useState([]) // stores the two cells of the last move
 	const [selectedCell, setSelectedCell] = useState(null)
 	const [turn, setTurn] = useState(false)
 	const [player, setPlayer] = useState('W')
@@ -37,6 +38,7 @@ const Game = ({ gameState, gameId }) => {
 		setBoard((board) => swapPositionsOfBoard(board, pos1, pos2))
 		console.log('Changing turn')
 		setTurn(false)
+		setLastMove([])
 	}
 	const drag = useCallback(
 		(pos1, pos2) => {
@@ -75,6 +77,10 @@ const Game = ({ gameState, gameId }) => {
 
 		socket.on('UPDATE BOARD', (board) => {
 			setBoard(board)
+		})
+
+		socket.on('UPDATE LAST MOVE', (pos1, pos2) => {
+			setLastMove([pos1, pos2])
 		})
 		socket.on('YOUR TURN', () => {
 			setTurn(true)
@@ -146,6 +152,7 @@ const Game = ({ gameState, gameId }) => {
 						back={boardBackground[i]}
 						onClick={() => cellClick(i)}
 						glowing={suggestedMoves.includes(i)}
+						lastMove={lastMove.includes(i)}
 					/>
 				))}
 			</div>

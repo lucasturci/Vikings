@@ -80,6 +80,9 @@ class Game {
 		this.turn = 1 - this.turn
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', this.board)
 		this.socketInstance.to(this.players[this.turn]).emit('YOUR TURN')
+		this.socketInstance
+			.to(this.players[this.turn])
+			.emit('UPDATE LAST MOVE', pos1, pos2)
 	}
 }
 

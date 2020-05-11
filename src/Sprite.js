@@ -34,7 +34,7 @@ const Sprite = ({ src }) => {
 
 	return (
 		<img
-			className="noselect"
+			className="noselect sprite"
 			onMouseDown={(e) => mouseDown(e, false)}
 			onMouseMove={mouseMove}
 			style={
@@ -48,9 +48,7 @@ const Sprite = ({ src }) => {
 			}
 			src={src}
 			ref={ref}
-			draggable="false"
-			width="64"
-			height="64"></img>
+			draggable="false"></img>
 	)
 }
 

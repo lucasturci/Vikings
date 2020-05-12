@@ -92,9 +92,12 @@ const Game = ({ gameState, gameId }) => {
 		let x = e.clientX
 		let y = e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
+		const cellSize = window.matchMedia('(max-width: 768px)').matches
+			? 25
+			: 64
 		if (insideBoard(x, y)) {
-			x = Math.floor((x - rect.left) / 64)
-			y = Math.floor((y - rect.top) / 64)
+			x = Math.floor((x - rect.left) / cellSize)
+			y = Math.floor((y - rect.top) / cellSize)
 			const id = y * 11 + x
 
 			if (
@@ -112,9 +115,12 @@ const Game = ({ gameState, gameId }) => {
 		let x = e.clientX
 		let y = e.clientY
 		const rect = document.querySelector('#board').getBoundingClientRect()
+		const cellSize = window.matchMedia('(max-width: 768px)').matches
+			? 25
+			: 64
 		if (insideBoard(x, y)) {
-			x = Math.floor((x - rect.left) / 64)
-			y = Math.floor((y - rect.top) / 64)
+			x = Math.floor((x - rect.left) / cellSize)
+			y = Math.floor((y - rect.top) / cellSize)
 			const id = y * 11 + x
 			dragListener.stopRecording(id)
 		} else {

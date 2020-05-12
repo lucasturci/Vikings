@@ -113,6 +113,13 @@ io.on('connection', (socket) => {
 		game.move(board, pos1, pos2)
 	})
 
+	socket.on('UNDO', () => {
+		const roomId = roomsOfSocket.get(socket.id)
+		const game = games.get(roomId)
+		console.log('Undoing ')
+		game.undo()
+	})
+
 	socket.on('disconnect', () => {
 		if (roomsOfSocket.has(socket.id)) {
 			const roomId = roomsOfSocket.get(socket.id)

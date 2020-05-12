@@ -15,6 +15,8 @@ class Game {
 		this.started = false
 		this.board = []
 		this.turn = 0
+		this.history = []
+		this.lastMove = null
 	}
 
 	addPlayer(playerId) {
@@ -36,6 +38,10 @@ class Game {
 		return this.players.length === this.max_players
 	}
 
+	pushToHistory(board, turn, lastMove) {
+		this.history.push({ board, turn, lastMove })
+	}
+
 	start() {
 		this.started = true
 		console.log('Starting game!')
@@ -53,17 +59,19 @@ class Game {
 			.to(this.players[1])
 			.emit('GAME MESSAGE', 'You move!')
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', initialBoard)
-		this.socketInstance.to(this.players[1]).emit('YOUR TURN')
 
+		this.socketInstance.to(this.players[1]).emit('UPDATE TURN', true)
+
+		this.history = []
 		this.board = initialBoard
 		this.turn = 1
+		this.lastMove = null
 	}
 
 	/* Game is over
 	 * - Emit messages to the players sending who won and who lost
 	 * - Clears stuff for next game
 	 */
-
 	gameOver(winner) {
 		this.socketInstance.to(this.players[winner]).emit('GAME OVER', true)
 		this.socketInstance
@@ -76,12 +84,43 @@ class Game {
 		this.ready = [false, false]
 	}
 
+	/*
+		Undoes the last move
+	*/
+	undo() {
+		if (this.history.length === 0) return
+		const last = this.history.pop()
+
+		this.board = last.board
+		this.lastMove = last.lastMove
+		this.turn = last.turn
+
+		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', this.board)
+		if (this.lastMove)
+			this.socketInstance
+				.to(this.players[this.turn])
+				.emit('UPDATE LAST MOVE', this.lastMove[0], this.lastMove[1])
+		this.socketInstance
+			.to(this.players[1 - this.turn])
+			.emit('UPDATE LAST MOVE', null)
+
+		this.socketInstance
+			.to(this.players[1 - this.turn])
+			.emit('UPDATE TURN', false)
+		this.socketInstance
+			.to(this.players[this.turn])
+			.emit('UPDATE TURN', true)
+	}
+
 	// Returns new board after the move pos1 => pos2
 	// Assumes the move is valid, and just updates the board accordingly and checks if someone won or a draw happened (?)
 	move(board, pos1, pos2) {
 		if (!this.started) {
 			console.log('ERROR! Received move when game is not started')
 		}
+
+		this.pushToHistory(this.board, this.turn, this.lastMove)
+
 		this.board = swapPositionsOfBoard(board, pos1, pos2)
 		if (checksEaten(this.board, pos2 + 1, pos2)) {
 			if (this.board[pos2 + 1] !== 'K') this.board[pos2 + 1] = '.'
@@ -110,13 +149,16 @@ class Game {
 		}
 
 		this.turn = 1 - this.turn
+		this.lastMove = [pos1, pos2]
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', this.board)
 		this.socketInstance
 			.to(this.players[this.turn])
 			.emit('UPDATE LAST MOVE', pos1, pos2)
 		if (!over)
 			// If game is not over, send the turn to next player
-			this.socketInstance.to(this.players[this.turn]).emit('YOUR TURN')
+			this.socketInstance
+				.to(this.players[this.turn])
+				.emit('UPDATE TURN', true)
 	}
 }
 

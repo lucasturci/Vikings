@@ -83,8 +83,8 @@ const Game = ({ gameState, gameId }) => {
 		socket.on('UPDATE LAST MOVE', (pos1, pos2) => {
 			setLastMove([pos1, pos2])
 		})
-		socket.on('YOUR TURN', () => {
-			setTurn(true)
+		socket.on('UPDATE TURN', (turn) => {
+			setTurn(turn)
 		})
 	}, [])
 

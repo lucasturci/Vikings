@@ -39,9 +39,25 @@ const ChatWidget = () => {
 		})
 	}, [])
 
+	// Makes the command and tells if the command should not appear as a chat message
+	const command = (value) => {
+		const commands = {
+			'\\undo': () => {
+				socket.emit('UNDO')
+				return false // should appear as chat message
+			},
+		}
+		if (Object.keys(commands).includes(value)) {
+			return commands[value]()
+		}
+		return false
+	}
 	const sendMessage = () => {
 		const value = document.querySelector('#chat-input').value
 		document.querySelector('#chat-input').value = ''
+
+		if (command(value)) return
+
 		if (value) {
 			socket.emit('CHAT MESSAGE', value)
 		}

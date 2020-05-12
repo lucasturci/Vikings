@@ -46,6 +46,11 @@ const ChatWidget = () => {
 				socket.emit('UNDO')
 				return false // should appear as chat message
 			},
+
+			'\\swap': () => {
+				socket.emit('SWAP')
+				return true // should not appear as chat message
+			},
 		}
 		if (Object.keys(commands).includes(value)) {
 			return commands[value]()

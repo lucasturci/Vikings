@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import getDragListener from './DragListener'
 import Cell from './Cell'
 import {
@@ -40,20 +40,13 @@ const Game = ({ gameState, gameId }) => {
 		setTurn(false)
 		setLastMove([])
 	}
-	const drag = useCallback(
-		(pos1, pos2) => {
-			if (
-				pos1 !== pos2 &&
-				turn &&
-				isMoveValid(board, player, pos1, pos2)
-			) {
-				makeMove(pos1, pos2)
-				setSelectedCell(null)
-				setSuggestedMoves([])
-			}
-		},
-		[turn, board],
-	)
+	const drag = (pos1, pos2) => {
+		if (pos1 !== pos2 && turn && isMoveValid(board, player, pos1, pos2)) {
+			makeMove(pos1, pos2)
+			setSelectedCell(null)
+			setSuggestedMoves([])
+		}
+	}
 
 	const dragListener = getDragListener()
 	useEffect(() => {
@@ -70,10 +63,13 @@ const Game = ({ gameState, gameId }) => {
 
 		// SOCKET STUFF
 
-		socket.on('YOU ARE PLAYER', (p) => {
-			setPlayer(p)
+		socket.on('STARTING', () => {
 			setBoard(initialBoard)
 			setLastMove([])
+		})
+
+		socket.on('YOU ARE PLAYER', (p) => {
+			setPlayer(p)
 		})
 
 		socket.on('UPDATE BOARD', (board) => {

@@ -85,16 +85,9 @@ class Game {
 	}
 
 	/*
-		Undoes the last move
+		Emits messages to update the clients
 	*/
-	undo() {
-		if (this.history.length === 0) return
-		const last = this.history.pop()
-
-		this.board = last.board
-		this.lastMove = last.lastMove
-		this.turn = last.turn
-
+	update() {
 		this.socketInstance.in(this.roomId).emit('UPDATE BOARD', this.board)
 		if (this.lastMove)
 			this.socketInstance
@@ -110,6 +103,48 @@ class Game {
 		this.socketInstance
 			.to(this.players[this.turn])
 			.emit('UPDATE TURN', true)
+	}
+
+	/*
+		Undoes the last move
+	*/
+	undo() {
+		if (this.history.length === 0) return
+		const last = this.history.pop()
+
+		this.board = last.board
+		this.lastMove = last.lastMove
+		this.turn = last.turn
+
+		this.update()
+	}
+
+	/*
+		Swaps the black player with the white player
+	*/
+	swap() {
+		// Can only be triggered when game has already started
+		if (this.started) {
+			// swap the players
+			const aux = this.players[0]
+			this.players[0] = this.players[1]
+			this.players[1] = aux
+
+			this.update()
+
+			this.socketInstance
+				.in(this.roomId)
+				.emit('GAME MESSAGE', 'Swapping the characters')
+			this.socketInstance.to(this.players[0]).emit('YOU ARE PLAYER', 'W')
+			this.socketInstance
+				.to(this.players[0])
+				.emit('GAME MESSAGE', 'You are the defender!')
+			this.socketInstance.to(this.players[1]).emit('YOU ARE PLAYER', 'B')
+			this.socketInstance
+				.to(this.players[1])
+				.emit('GAME MESSAGE', 'You are the attacker!')
+			this.socketInstance.to(this.players[1])
+		}
 	}
 
 	// Returns new board after the move pos1 => pos2

@@ -147,6 +147,17 @@ class Game {
 		}
 	}
 
+	/*
+		Is called when an user gives up and doesn't wanna wait for the game to end
+	*/
+	forfeit(id) {
+		const player = this.players.indexOf(id)
+		this.socketInstance
+			.in(this.roomId)
+			.emit('GAME MESSAGE', `User ${id.substr(0, 3)} gives up`)
+		this.gameOver(1 - player)
+	}
+
 	// Returns new board after the move pos1 => pos2
 	// Assumes the move is valid, and just updates the board accordingly and checks if someone won or a draw happened (?)
 	move(board, pos1, pos2) {

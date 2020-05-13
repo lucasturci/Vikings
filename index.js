@@ -120,6 +120,13 @@ io.on('connection', (socket) => {
 		game.undo()
 	})
 
+	socket.on('GG', () => {
+		const roomId = roomsOfSocket.get(socket.id)
+		const game = games.get(roomId)
+		console.log(`${socket.id} gives up`)
+		game.forfeit(socket.id)
+	})
+
 	socket.on('SWAP', () => {
 		const roomId = roomsOfSocket.get(socket.id)
 		const game = games.get(roomId)

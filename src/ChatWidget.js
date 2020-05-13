@@ -40,9 +40,9 @@ const ChatWidget = () => {
 	}, [])
 
 	useEffect(() => {
-		document.getElementById('chat').scrollTop = document.getElementById(
-			'chat',
-		).scrollHeight
+		document.getElementById(
+			'wrappedChat',
+		).scrollTop = document.getElementById('wrappedChat').scrollHeight
 	}, [messages])
 
 	// Makes the command and tells if the command should not appear as a chat message
@@ -88,12 +88,23 @@ const ChatWidget = () => {
 	return (
 		<>
 			<div className="grow wordwrap" id="chat">
-				{messages.map((msg, i) => (
-					<p key={i}>
-						{msg.from ? <strong> {msg.from + ':'} </strong> : null}{' '}
-						{msg.from ? msg.content : <i> {msg.content}</i>}
-					</p>
-				))}
+				<div
+					id="wrappedChat"
+					style={{
+						overflowY: 'scroll',
+						width: '100%',
+						height: '100%',
+						flexGrow: '0',
+					}}>
+					{messages.map((msg, i) => (
+						<p key={i}>
+							{msg.from ? (
+								<strong> {msg.from + ':'} </strong>
+							) : null}{' '}
+							{msg.from ? msg.content : <i> {msg.content}</i>}
+						</p>
+					))}
+				</div>
 			</div>
 			<div id="input-row">
 				<input

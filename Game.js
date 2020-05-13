@@ -151,6 +151,7 @@ class Game {
 		Is called when an user gives up and doesn't wanna wait for the game to end
 	*/
 	forfeit(id) {
+		if (this.started === false) return // just ignore
 		const player = this.players.indexOf(id)
 		this.socketInstance
 			.in(this.roomId)

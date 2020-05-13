@@ -135,10 +135,19 @@ function checksEaten(board, pos, enemy) {
 		// since enemy is definitely one of occupied sides of the king, it doesn't depend on it.
 		const dirs = [+1, -1, +11, -11]
 
+		const numberOfBlacks = board.reduce((cur, x) => {
+			return cur + (x === 'B' ? 1 : 0)
+		}, 0)
 		let flag = true
 		dirs.forEach((dir) => {
-			if (valid(pos + dir) && ['.', 'W'].includes(board[pos + dir]))
-				flag = false
+			// If there are only 3 black pieces you can capture in the edges otherwise not
+			if (numberOfBlacks === 3) {
+				if (valid(pos + dir) && ['.', 'W'].includes(board[pos + dir]))
+					flag = false
+			} else {
+				if (!valid(pos + dir) || ['.', 'W'].includes(board[pos + dir]))
+					flag = false
+			}
 		})
 		return flag
 	} else if (opposite(board[pos], board[enemy])) {

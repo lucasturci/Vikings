@@ -39,6 +39,12 @@ const ChatWidget = () => {
 		})
 	}, [])
 
+	useEffect(() => {
+		document.getElementById('chat').scrollTop = document.getElementById(
+			'chat',
+		).scrollHeight
+	}, [messages])
+
 	// Makes the command and tells if the command should not appear as a chat message
 	const command = (value) => {
 		const commands = {
@@ -78,6 +84,7 @@ const ChatWidget = () => {
 			}),
 		)
 	}
+
 	return (
 		<>
 			<div className="grow wordwrap" id="chat">

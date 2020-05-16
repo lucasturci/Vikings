@@ -153,7 +153,7 @@ function checksEaten(board, pos, enemy) {
 	} else if (opposite(board[pos], board[enemy])) {
 		const dirs = [+1, -1, +11, -11]
 
-		const hostileSquares = kingCells
+		const hostileSquares = kingCells.slice()
 		if (board[pos] === 'W' && board[middleCell] == 'K')
 			hostileSquares.splice(2, 1) // remove that, because it is not hostile to white
 

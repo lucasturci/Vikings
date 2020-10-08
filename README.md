@@ -7,7 +7,7 @@
 
 ## Overview
 
-Viking chess, or [Hnefatafl](https://en.wikipedia.org/wiki/Tafl_games), is a board game from the nordics, and this project is an online version of this game, which you can play [here](http://68.183.61.94/). The rules can be found [here](https://www.fetlar.org/assets/files/hnefatafl-rules-02-09-2012.pdf).
+Viking chess, or [Hnefatafl](https://en.wikipedia.org/wiki/Tafl_games), is a board game from the nordics, and this project is an online version of this game. The rules can be found [here](https://www.fetlar.org/assets/files/hnefatafl-rules-02-09-2012.pdf).
 
 It works on **mobile** too.
 

@@ -44,4 +44,4 @@ Type `\undo` to undo your move. You can also type this to undo your opponents mo
 - **Draw**: 
 
 This is a *to-do*. You are welcome to contribute with a pull request. :)
-Both players must type `\draw` in the chat to agreed to a draw. 
+Both players must type `\draw` in the chat to agree to a draw. 
